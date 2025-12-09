@@ -1,13 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-
 import { OpenAI } from "openai";
 import Hotel from "../infrastructure/entities/Hotel";
+import { generateEmbedding } from "./utils/embeddings";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-const messages: { role: "user" | "assistant"; content: string }[] = [];
 
 export const respondToAIQuery = async (
   req: Request,
@@ -17,37 +15,65 @@ export const respondToAIQuery = async (
   try {
     const { query } = req.body;
 
-    const hotelsData = await Hotel.find();
+    if (!query || query.trim() === "") {
+      return res.status(400).json({ error: "Query is required" });
+    }
 
-    const response = await openai.responses.create({
-      model: "gpt-5",
-      instructions: `You are a helpful assistant that helps users to choose a hotel for a vibe they describe. the availble hotels are given below. Based on that recommend them a hotel along with the information: ${JSON.stringify(
-        hotelsData
-      )}`,
-      input: query,
+    // Use vector search to find relevant hotels
+    const queryEmbedding = await generateEmbedding(query);
+    const relevantHotels = await Hotel.aggregate([
+      {
+        $vectorSearch: {
+          index: "hotel_vector_index",
+          path: "embedding",
+          queryVector: queryEmbedding,
+          numCandidates: 25,
+          limit: 8,
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          location: 1,
+          price: 1,
+          image: 1,
+          rating: 1,
+          description: 1,
+          score: { $meta: "vectorSearchScore" },
+        },
+      },
+    ]);
+
+    // Create AI prompt with relevant hotels
+    const hotelContext = relevantHotels.map(hotel => 
+      `${hotel.name} in ${hotel.location} - $${hotel.price}/night, Rating: ${hotel.rating || 'N/A'}, Description: ${hotel.description}`
+    ).join('\n');
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: `You are a helpful hotel recommendation assistant. Based on the user's query, recommend the most suitable hotels from the available options. Provide a brief, friendly response with specific hotel recommendations and why they match the user's needs. Keep it concise and helpful.\n\nAvailable hotels:\n${hotelContext}`
+        },
+        {
+          role: "user",
+          content: query
+        }
+      ],
+      max_tokens: 300,
+      temperature: 0.7,
     });
 
-    const aiResponse = response.output
-      .filter((o) => o.type === "message")
-      .map((el) => {
-        return el.content
-          .filter((c) => c.type === "output_text")
-          .map((t) => t.text)
-          .join("\n");
-      })
-      .join("\n");
-
-    messages.push({
-      role: "assistant",
-      content: aiResponse,
-    });
-
-    console.log(messages);
+    const aiResponse = response.choices[0]?.message?.content || "I couldn't find suitable recommendations for your query.";
 
     res.status(200).json({
       response: aiResponse,
+      hotels: relevantHotels
     });
   } catch (error) {
+    console.error('AI Query Error:', error);
     next(error);
   }
 };

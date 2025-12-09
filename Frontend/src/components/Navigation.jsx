@@ -1,15 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
-import { Globe, Menu, X } from "lucide-react";
+import { Globe, Menu, X, RotateCcw } from "lucide-react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router";
+import { resetQuery } from "@/lib/features/searchSlice";
 import ThemeToggle from "./ThemeToggle";
 
 function Navigation() {
-  //   const { user } = useUser();
+  const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { query, isAiSearch } = useSelector((state) => state.search);
+  
+  const handleClearSearch = () => {
+    dispatch(resetQuery());
+  };
   //   const menuRef = useRef(null);
     // const buttonRef = useRef(null);
 
@@ -63,6 +69,7 @@ function Navigation() {
                 ? 'text-blue-600 after:w-full' 
                 : 'text-gray-700 hover:text-blue-600 after:w-0 hover:after:w-full'
             }`}
+            onClick={query ? handleClearSearch : undefined}
           >
             Home
           </Link>
@@ -76,6 +83,17 @@ function Navigation() {
           >
             Hotels
           </Link>
+          {query && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleClearSearch}
+              className="flex items-center gap-2 text-xs"
+            >
+              <RotateCcw className="w-3 h-3" />
+              Clear Search
+            </Button>
+          )}
           {/* <p>{count}</p> */}
 
           {/* {user?.publicMetadata?.role === "admin" && (
@@ -87,6 +105,17 @@ function Navigation() {
       </div>
 
       <div className="flex items-center space-x-4">
+        {query && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleClearSearch}
+            className="flex items-center gap-2 text-xs md:hidden"
+          >
+            <RotateCcw className="w-3 h-3" />
+            Clear
+          </Button>
+        )}
         <ThemeToggle />
         <Button variant="ghost" size="sm" className="text-xs hidden md:flex text-gray-700">
           <Globe className="h-4 w-4 mr-2" />

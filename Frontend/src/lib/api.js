@@ -23,10 +23,17 @@ export const api = createApi({
       });
     },
   }),
+  tagTypes: ['Hotels', 'Locations', 'Bookings'],
   endpoints: (build) => ({
     getAllHotels: build.query({
       query: () => "hotels",
       providesTags: (result, error, id) => [{ type: "Hotels", id: "LIST" }],
+      transformErrorResponse: (response) => {
+        if (response.status === 'FETCH_ERROR') {
+          return { message: 'Backend server is not running. Please start the backend server.' };
+        }
+        return response;
+      },
     }),
     getHotelsBySearch: build.query({
       query: (search) => `hotels/search?query=${search}`,
@@ -92,6 +99,13 @@ export const api = createApi({
     getCheckoutSessionStatus: build.query({
       query: (sessionId) => `payments/session-status?session_id=${sessionId}`,
     }),
+    aiSearch: build.mutation({
+      query: (query) => ({
+        url: "hotels/ai",
+        method: "POST",
+        body: { query },
+      }),
+    }),
   }),
 });
 
@@ -109,4 +123,5 @@ export const {
   useGetUserBookingsQuery,
   useCreateCheckoutSessionMutation,
   useGetCheckoutSessionStatusQuery,
+  useAiSearchMutation,
 } = api;
