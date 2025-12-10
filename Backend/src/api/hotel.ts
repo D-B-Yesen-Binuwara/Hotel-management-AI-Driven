@@ -14,6 +14,7 @@ import isAuthenticated from "./middleware/authentication-middleware";
 import isAdmin from "./middleware/authorization-middleware";
 import { respondToAIQuery } from "../application/ai";
 
+
 const hotelsRouter = express.Router();
 
 const preMiddleware = (req: Request, res: Response, next: NextFunction) => {
@@ -28,6 +29,7 @@ hotelsRouter
 
 hotelsRouter.route("/ai").post(respondToAIQuery);
 hotelsRouter.route("/search").get(getAllHotelsBySearchQuery);
+
 
 hotelsRouter
   .route("/:_id")

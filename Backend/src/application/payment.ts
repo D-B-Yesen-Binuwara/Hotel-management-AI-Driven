@@ -43,14 +43,49 @@ export const createCheckoutSession = async (
     }
 
     const hotel = booking.hotelId as any;
+    
+    // Enhanced error handling for missing Stripe configuration
     if (!hotel.stripePriceId) {
-      throw new ValidationError("Stripe price ID is missing for this hotel");
+      console.warn(`Hotel ${hotel.name} (${hotel._id}) is missing Stripe price ID`);
+      
+      // Fallback: Create a generic line item
+      const session = await stripe.checkout.sessions.create({
+        ui_mode: "embedded",
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: `${hotel.name} - Hotel Booking`,
+                description: `Room booking at ${hotel.name}, ${hotel.location}`,
+              },
+              unit_amount: Math.round(hotel.price * 100), // Convert to cents
+            },
+            quantity: Math.ceil((new Date(booking.checkOut).getTime() - new Date(booking.checkIn).getTime()) / (1000 * 60 * 60 * 24)),
+          },
+        ],
+        mode: "payment",
+        return_url: `${FRONTEND_URL}/booking/complete?session_id={CHECKOUT_SESSION_ID}`,
+        metadata: {
+          bookingId: booking._id.toString(),
+        },
+      });
+      
+      return res.json({ clientSecret: session.client_secret });
     }
 
-    // Calculate number of nights
+    // Calculate number of nights with validation
     const checkIn = new Date(booking.checkIn);
     const checkOut = new Date(booking.checkOut);
     const numberOfNights = Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24));
+    
+    if (numberOfNights <= 0) {
+      throw new ValidationError("Invalid booking dates: Check-out must be after check-in");
+    }
+    
+    if (numberOfNights > 30) {
+      throw new ValidationError("Booking cannot exceed 30 nights");
+    }
 
     const session = await stripe.checkout.sessions.create({
       ui_mode: "embedded",
@@ -64,11 +99,15 @@ export const createCheckoutSession = async (
       return_url: `${FRONTEND_URL}/booking/complete?session_id={CHECKOUT_SESSION_ID}`,
       metadata: {
         bookingId: booking._id.toString(),
+        userId: auth.userId,
+        hotelId: hotel._id.toString(),
+        numberOfNights: numberOfNights.toString(),
       },
     });
 
     res.json({ clientSecret: session.client_secret });
   } catch (error) {
+    console.error("Payment session creation error:", error);
     next(error);
   }
 };

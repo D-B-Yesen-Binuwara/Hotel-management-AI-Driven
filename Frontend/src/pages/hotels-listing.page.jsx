@@ -8,6 +8,7 @@ import { Grid, List, MapPin, Star, Eye, Search, ChevronLeft, ChevronRight } from
 import { Link } from "react-router";
 import { Input } from "@/components/ui/input";
 import FilterSidebar from "@/components/FilterSidebar";
+import LazyImage from "@/components/LazyImage";
 
 const HotelsListingPage = () => {
   const [viewMode, setViewMode] = useState("grid");
@@ -144,13 +145,11 @@ const HotelsListingPage = () => {
 
   const HotelCard = ({ hotel }) => (
     <Card className="overflow-hidden hover-lift bg-white dark:bg-gray-800">
-      <div className="relative h-48">
-        <img
-          src={hotel.image}
-          alt={hotel.name}
-          className="w-full h-full object-cover"
-        />
-      </div>
+      <LazyImage
+        src={hotel.image}
+        alt={hotel.name}
+        className="h-48"
+      />
       <CardContent className="p-4">
         <div className="flex justify-between items-start mb-2">
           <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
@@ -194,13 +193,11 @@ const HotelsListingPage = () => {
   const HotelListItem = ({ hotel }) => (
     <Card className="overflow-hidden hover-lift bg-white dark:bg-gray-800">
       <div className="flex">
-        <div className="w-48 h-32 flex-shrink-0">
-          <img
-            src={hotel.image}
-            alt={hotel.name}
-            className="w-full h-full object-cover"
-          />
-        </div>
+        <LazyImage
+          src={hotel.image}
+          alt={hotel.name}
+          className="w-48 h-32 flex-shrink-0"
+        />
         <CardContent className="flex-1 p-4">
           <div className="flex justify-between items-start mb-2">
             <div>

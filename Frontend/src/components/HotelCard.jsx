@@ -2,6 +2,7 @@ import { MapPin, Star, Eye } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { Link } from "react-router";
+import LazyImage from "./LazyImage";
 
 function HotelCard(props) {
   // let num = 1;
@@ -17,10 +18,10 @@ function HotelCard(props) {
     <div className="group relative">
       <Link to={`/hotels/${props.hotel._id}`} className="block">
         <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
-          <img
+          <LazyImage
             src={props.hotel.image}
             alt={props.hotel.name}
-            className="object-cover w-full h-full absolute transition-transform group-hover:scale-105"
+            className="absolute inset-0 transition-transform group-hover:scale-105"
           />
         </div>
       </Link>
