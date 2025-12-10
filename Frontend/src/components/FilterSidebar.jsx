@@ -203,7 +203,7 @@ const FilterSidebar = ({
       <Button 
         variant="outline" 
         onClick={onClearFilters}
-        className="w-full border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700"
+        className="w-full border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white bg-white dark:bg-gray-800"
       >
         Clear All Filters
       </Button>

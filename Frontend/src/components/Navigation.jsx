@@ -67,7 +67,7 @@ function Navigation() {
             className={`transition-colors text-sm font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-blue-600 after:transition-all after:duration-300 ${
               location.pathname === '/' 
                 ? 'text-blue-600 after:w-full' 
-                : 'text-gray-700 hover:text-blue-600 after:w-0 hover:after:w-full'
+                : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 after:w-0 hover:after:w-full'
             }`}
             onClick={query ? handleClearSearch : undefined}
           >
@@ -78,7 +78,7 @@ function Navigation() {
             className={`transition-colors text-sm font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-blue-600 after:transition-all after:duration-300 ${
               location.pathname === '/hotels-listing' 
                 ? 'text-blue-600 after:w-full' 
-                : 'text-gray-700 hover:text-blue-600 after:w-0 hover:after:w-full'
+                : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 after:w-0 hover:after:w-full'
             }`}
           >
             Hotels
@@ -88,7 +88,7 @@ function Navigation() {
               variant="outline"
               size="sm"
               onClick={handleClearSearch}
-              className="flex items-center gap-2 text-xs"
+              className="flex items-center gap-2 text-xs border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
             >
               <RotateCcw className="w-3 h-3" />
               Clear Search
@@ -110,14 +110,14 @@ function Navigation() {
             variant="ghost"
             size="sm"
             onClick={handleClearSearch}
-            className="flex items-center gap-2 text-xs md:hidden"
+            className="flex items-center gap-2 text-xs md:hidden text-gray-700 dark:text-gray-300 hover:text-blue-600"
           >
             <RotateCcw className="w-3 h-3" />
             Clear
           </Button>
         )}
         <ThemeToggle />
-        <Button variant="ghost" size="sm" className="text-xs hidden md:flex text-gray-700">
+        <Button variant="ghost" size="sm" className="text-xs hidden md:flex text-gray-700 dark:text-gray-300 hover:text-blue-600">
           <Globe className="h-4 w-4 mr-2" />
           EN
         </Button>
@@ -126,7 +126,7 @@ function Navigation() {
             variant="ghost"
             size="sm"
             asChild
-            className="text-xs hidden md:flex text-gray-700 hover:text-blue-600"
+            className="text-xs hidden md:flex text-gray-700 dark:text-gray-300 hover:text-blue-600"
           >
             <Link to="/sign-in">Log In</Link>
           </Button>

@@ -69,7 +69,7 @@ Ensure your hotels have embeddings generated. When creating new hotels through t
 ## 🎯 Features Implemented
 
 ### AI Search Functionality
-- **Smart Recommendations:** Uses OpenAI GPT-3.5-turbo for intelligent hotel recommendations
+- **Smart Recommendations:** Uses OpenAI GPT-4o-mini for intelligent hotel recommendations
 - **Vector Search:** Leverages MongoDB Atlas Vector Search for semantic similarity
 - **Contextual Results:** AI provides explanations for why hotels match the query
 
@@ -97,7 +97,7 @@ Ensure your hotels have embeddings generated. When creating new hotels through t
 ## 📝 Notes
 
 - OpenAI API key is already configured in your .env file
-- The implementation uses GPT-3.5-turbo for cost efficiency
+- The implementation uses GPT-4o-mini for free tier compatibility
 - Vector embeddings use text-embedding-3-small model
 - All search states are properly managed in Redux
 - Toast notifications provide user feedback
