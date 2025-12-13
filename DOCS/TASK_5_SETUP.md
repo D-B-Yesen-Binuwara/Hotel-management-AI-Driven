@@ -103,3 +103,80 @@ Ensure your hotels have embeddings generated. When creating new hotels through t
 - Toast notifications provide user feedback
 
 The implementation is complete and ready to use once the MongoDB vector index is created!
+
+
+========= TO BE DONE ================
+
+❌ MISSING/INCOMPLETE FEATURES
+Task 1: Deployment Issues
+❌ Stripe Configuration: Using placeholder keys
+
+Backend: STRIPE_SECRET_KEY=sk_test_temp_key_replace_with_actual_key
+
+Frontend: VITE_STRIPE_PUBLISHABLE_KEY=pk_test_placeholder_key
+
+Webhook: STRIPE_WEBHOOK_SECRET=whsec_temp_secret_replace_with_actual_secret
+
+❌ Production Deployment: Not deployed to live URLs
+
+❌ Stripe Products: No actual Stripe products with prices created
+
+Task 3: UI/UX Customization & Brand Identity
+❌ Custom Design System: Still using default Tailwind colors
+
+❌ Brand Identity: No custom logo or unique branding
+
+❌ Visual Identity: Generic styling, no unique design elements
+
+❌ Advanced Animations: Basic animations only
+
+❌ Theme System: No dark/light mode toggle (components exist but not implemented)
+
+
+============ OPTIONAL ============================================
+
+Reviews:
+❌ Users CANNOT add reviews currently
+
+You have a Review entity and reviews array in Hotel schema
+
+But there's NO API endpoint to create reviews
+
+The review router exists but has no implemented functions
+
+❌ Users CANNOT see other users' reviews
+
+No frontend components display reviews
+
+Hotel details page doesn't show review list
+
+Only shows review COUNT: ({props.hotel.reviews?.length ?? "No"} Reviews)
+
+Ratings:
+❌ Users CANNOT add ratings
+
+No rating submission functionality exists
+
+No API endpoints for rating submission
+
+🤔 Rating Display Logic:
+
+Hotel schema has a single rating field (Number, 1-5)
+
+This appears to be a static/admin-set rating, not calculated from user ratings
+
+If multiple ratings were added, you'd need to:
+
+Store individual ratings in Review documents
+
+Calculate average rating from all reviews
+
+Update Hotel.rating field with the average
+
+Current State:
+Reviews: Display count only, no creation/viewing
+
+Ratings: Static field, no user interaction
+
+Missing: Review creation, review display, rating submission, rating calculation
+

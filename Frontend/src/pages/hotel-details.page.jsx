@@ -112,61 +112,66 @@ const HotelDetailsPage = () => {
                 <p className="text-muted-foreground">{hotel.location}</p>
               </div>
             </div>
-            <Button variant="outline" size="icon">
-              <Star className="h-4 w-4" />
-              <span className="sr-only">Add to favorites</span>
-            </Button>
+
           </div>
-          <div className="flex items-center space-x-1">
-            <Star className="h-5 w-5 fill-primary text-primary" />
-            <span className="font-bold">{hotel?.rating ?? "No rating"}</span>
-            <span className="text-muted-foreground">
-              ({hotel?.reviews.length === 0 ? "No" : hotel?.reviews.length}{" "}
-              reviews)
-            </span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-1">
+              {hotel?.rating && (
+                <>
+                  <span className="font-bold">{hotel.rating}</span>
+                  <span className="text-muted-foreground">★</span>
+                </>
+              )}
+              <span className="text-muted-foreground">
+                ({hotel?.reviews.length === 0 ? "No" : hotel?.reviews.length}{" "}
+                reviews)
+              </span>
+            </div>
+            <div className="text-right">
+              <p className="text-2xl font-bold">${hotel.price} / per night</p>
+              {/* <p className="text-sm text-muted-foreground">per night</p> */}
+            </div>
           </div>
           <p className="text-muted-foreground">{hotel.description}</p>
-          <Card>
+          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <CardContent className="p-4">
-              <h2 className="text-xl font-semibold mb-4">Amenities</h2>
+              <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Amenities</h2>
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center">
-                  <Wifi className="h-5 w-5 mr-2" />
-                  <span>Free Wi-Fi</span>
+                  <Wifi className="h-5 w-5 mr-2 text-gray-600 dark:text-gray-300" />
+                  <span className="text-gray-900 dark:text-gray-100">Free Wi-Fi</span>
                 </div>
                 <div className="flex items-center">
-                  <Building2 className="h-5 w-5 mr-2" />
-                  <span>Restaurant</span>
+                  <Building2 className="h-5 w-5 mr-2 text-gray-600 dark:text-gray-300" />
+                  <span className="text-gray-900 dark:text-gray-100">Restaurant</span>
                 </div>
                 <div className="flex items-center">
-                  <Tv className="h-5 w-5 mr-2" />
-                  <span>Flat-screen TV</span>
+                  <Tv className="h-5 w-5 mr-2 text-gray-600 dark:text-gray-300" />
+                  <span className="text-gray-900 dark:text-gray-100">Flat-screen TV</span>
                 </div>
                 <div className="flex items-center">
-                  <Coffee className="h-5 w-5 mr-2" />
-                  <span>Coffee maker</span>
+                  <Coffee className="h-5 w-5 mr-2 text-gray-600 dark:text-gray-300" />
+                  <span className="text-gray-900 dark:text-gray-100">Coffee maker</span>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-2xl font-bold">${hotel.price}</p>
-              <p className="text-sm text-muted-foreground">per night</p>
-            </div>
+          <div className="flex gap-3 pt-2">
             <Button
               disabled={isAddReviewLoading}
-              className={`${isAddReviewLoading ? "opacity-50" : ""}`}
+              className={`w-32 bg-blue-600 hover:bg-blue-700 text-white border-0 ${isAddReviewLoading ? "opacity-50" : ""}`}
               onClick={handleAddReview}
             >
-              <PlusCircle className="w-4 h-4" /> Add Review
+              <PlusCircle className="w-4 h-4 mr-2" /> Add Review
             </Button>
-            <BookingDialog
-              hotelName={hotel.name}
-              hotelId={_id}
-              onSubmit={handleBook}
-              isLoading={isCreateBookingLoading}
-            />
+            <div className="flex-1">
+              <BookingDialog
+                hotelName={hotel.name}
+                hotelId={_id}
+                onSubmit={handleBook}
+                isLoading={isCreateBookingLoading}
+              />
+            </div>
           </div>
         </div>
       </div>

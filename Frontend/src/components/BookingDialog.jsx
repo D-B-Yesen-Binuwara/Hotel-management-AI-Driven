@@ -74,10 +74,10 @@ const BookingDialog = ({ hotelName, hotelId, onSubmit, isLoading }) => {
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Calendar className="w-5 h-5" />
+        <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+          <Calendar className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           Book {hotelName}
         </CardTitle>
       </CardHeader>
@@ -89,13 +89,13 @@ const BookingDialog = ({ hotelName, hotelId, onSubmit, isLoading }) => {
               name="checkIn"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Check-in Date</FormLabel>
+                  <FormLabel className="text-gray-900 dark:text-gray-100">Check-in Date</FormLabel>
                   <FormControl>
                     <Input
                       type="date"
                       min={getTodayDate()}
                       {...field}
-                      className="w-full"
+                      className="w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                     />
                   </FormControl>
                   <FormMessage />
@@ -108,13 +108,13 @@ const BookingDialog = ({ hotelName, hotelId, onSubmit, isLoading }) => {
               name="checkOut"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Check-out Date</FormLabel>
+                  <FormLabel className="text-gray-900 dark:text-gray-100">Check-out Date</FormLabel>
                   <FormControl>
                     <Input
                       type="date"
                       min={form.watch("checkIn") || getTomorrowDate()}
                       {...field}
-                      className="w-full"
+                      className="w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                     />
                   </FormControl>
                   <FormMessage />
@@ -125,9 +125,8 @@ const BookingDialog = ({ hotelName, hotelId, onSubmit, isLoading }) => {
             <div className="flex gap-2 pt-4">
               <Button
                 type="button"
-                variant="outline"
                 onClick={() => setIsOpen(false)}
-                className="flex-1"
+                className="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-gray-100 dark:border-gray-500"
               >
                 Cancel
               </Button>
