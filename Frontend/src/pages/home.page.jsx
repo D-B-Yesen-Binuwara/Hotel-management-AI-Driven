@@ -4,7 +4,7 @@ import HotelsView from "../components/HotelsView";
 function HomePage() {
   return (
     <main>
-      <div className="relative min-h-[85vh]">
+      <div className="relative">
         <Hero />
       </div>
 

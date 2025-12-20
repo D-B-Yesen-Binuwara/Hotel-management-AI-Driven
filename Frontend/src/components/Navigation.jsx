@@ -59,7 +59,7 @@ function Navigation() {
     <nav className="z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg border border-white/20 dark:border-gray-700/20 flex items-center justify-between px-6 sm:px-8 text-neutral-800 dark:text-gray-200 py-4 rounded-2xl mx-4 my-4 relative transition-all duration-300 hover:shadow-xl">
       <div className="flex items-center space-x-8">
         <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent hover:from-blue-700 hover:to-blue-900 transition-all duration-300">
-          Horizone
+          PRIME-HAVENS
         </Link>
         <div className="hidden md:flex space-x-6">
           <Link 
