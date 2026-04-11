@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useGetAllHotelsQuery, useGetAllLocationsQuery } from "@/lib/api";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -106,21 +105,19 @@ const HotelsListingPage = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-        <div className="container mx-auto px-4">
+        <div className="mx-2 sm:mx-4 px-3 sm:px-4">
           <div className="flex justify-between items-center mb-8">
             <Skeleton className="h-8 w-48" />
             <Skeleton className="h-10 w-32" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <Card key={i}>
-                <Skeleton className="h-48 w-full rounded-t-2xl" />
-                <CardContent className="p-4">
-                  <Skeleton className="h-6 w-3/4 mb-2" />
-                  <Skeleton className="h-4 w-1/2 mb-4" />
-                  <Skeleton className="h-8 w-full" />
-                </CardContent>
-              </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <div key={i} className="space-y-3">
+                <Skeleton className="aspect-[4/3] w-full rounded-xl" />
+                <Skeleton className="h-5 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-8 w-full" />
+              </div>
             ))}
           </div>
         </div>
@@ -132,121 +129,103 @@ const HotelsListingPage = () => {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            Failed to load hotels
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            Please try again later
-          </p>
+          <h2 className="text-2xl font-bold mb-4">Failed to load hotels</h2>
+          <p className="text-muted-foreground">Please try again later</p>
         </div>
       </div>
     );
   }
 
   const HotelCard = ({ hotel }) => (
-    <Card className="overflow-hidden hover-lift bg-white dark:bg-gray-800">
-      <LazyImage
-        src={hotel.image}
-        alt={hotel.name}
-        className="h-48"
-      />
-      <CardContent className="p-4">
-        <div className="flex justify-between items-start mb-2">
-          <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
-            {hotel.name}
-          </h3>
+    <div className="group relative rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200 p-2">
+      <Link to={`/hotels/${hotel._id}`} className="block">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
+          <LazyImage
+            src={hotel.image}
+            alt={hotel.name}
+            className="absolute inset-0 transition-transform group-hover:scale-105"
+          />
+        </div>
+      </Link>
+      <div className="mt-3 space-y-2">
+        <div className="flex justify-between items-start">
+          <h3 className="font-semibold text-sm leading-snug text-gray-900 dark:text-white">{hotel.name}</h3>
           {hotel.rating && (
-            <div className="flex items-center gap-1">
-              <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-              <span className="text-sm font-medium text-gray-900 dark:text-white">{hotel.rating}</span>
+            <div className="flex items-center gap-1 ml-1 flex-shrink-0">
+              <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+              <span className="text-xs font-medium">{hotel.rating}</span>
             </div>
           )}
         </div>
-        
-        <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300 mb-3">
-          <MapPin className="w-4 h-4" />
-          <span className="text-sm">{hotel.location}</span>
+        <div className="flex items-center text-muted-foreground">
+          <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
+          <span className="text-xs truncate">{hotel.location}</span>
         </div>
-
-        <div className="flex items-center justify-between gap-2">
-          <span className="font-semibold text-lg text-gray-900 dark:text-white">
-            ${hotel.price}/night
-          </span>
-          <div className="flex gap-2">
-            <Button asChild size="sm">
+        <div className="flex flex-col gap-1">
+          <span className="text-sm font-medium">${hotel.price}<span className="text-xs font-normal text-muted-foreground">/night</span></span>
+          <div className="flex gap-1">
+            <Button asChild size="sm" className="flex-1 text-xs h-7">
               <Link to={`/hotels/${hotel._id}`}>
-                <Eye className="w-4 h-4 mr-1" />
-                View Details
+                <Eye className="h-3 w-3 mr-1" />
+                Details
               </Link>
             </Button>
-            <Button asChild className="bg-green-600 hover:bg-green-700 text-white" size="sm">
-              <Link to={`/hotels/${hotel._id}`}>
-                Book Now
-              </Link>
+            <Button asChild size="sm" className="flex-1 text-xs h-7 bg-green-600 hover:bg-green-700">
+              <Link to={`/hotels/${hotel._id}`}>Book Now</Link>
             </Button>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 
   const HotelListItem = ({ hotel }) => (
-    <Card className="overflow-hidden hover-lift bg-white dark:bg-gray-800">
-      <div className="flex">
+    <div className="flex gap-4 border rounded-xl overflow-hidden bg-white dark:bg-gray-800 hover:shadow-md transition-shadow">
+      <div className="relative w-48 h-36 flex-shrink-0 overflow-hidden">
         <LazyImage
           src={hotel.image}
           alt={hotel.name}
-          className="w-48 h-32 flex-shrink-0"
+          className="absolute inset-0 w-full h-full object-cover"
         />
-        <CardContent className="flex-1 p-4">
-          <div className="flex justify-between items-start mb-2">
-            <div>
-              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
-                {hotel.name}
-              </h3>
-              <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300">
-                <MapPin className="w-4 h-4" />
-                <span className="text-sm">{hotel.location}</span>
-              </div>
-            </div>
+      </div>
+      <div className="flex-1 py-3 pr-4 flex flex-col justify-between">
+        <div>
+          <div className="flex justify-between items-start">
+            <h3 className="font-semibold text-sm leading-snug text-gray-900 dark:text-white">{hotel.name}</h3>
             {hotel.rating && (
               <div className="flex items-center gap-1">
                 <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                <span className="text-sm font-medium text-gray-900 dark:text-white">{hotel.rating}</span>
+                <span className="text-sm font-medium">{hotel.rating}</span>
               </div>
             )}
           </div>
-          
-          <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
-            {hotel.description}
-          </p>
-
-          <div className="flex items-center justify-between">
-            <span className="font-semibold text-lg text-gray-900 dark:text-white">
-              ${hotel.price}/night
-            </span>
-            <div className="flex gap-2">
-              <Button asChild size="sm">
-                <Link to={`/hotels/${hotel._id}`}>
-                  <Eye className="w-4 h-4 mr-1" />
-                  View Details
-                </Link>
-              </Button>
-              <Button asChild className="bg-green-600 hover:bg-green-700 text-white" size="sm">
-                <Link to={`/hotels/${hotel._id}`}>
-                  Book Now
-                </Link>
-              </Button>
-            </div>
+          <div className="flex items-center text-muted-foreground mt-1">
+            <MapPin className="h-4 w-4 mr-1" />
+            <span className="text-sm">{hotel.location}</span>
           </div>
-        </CardContent>
+          <p className="text-muted-foreground text-sm mt-1 line-clamp-2">{hotel.description}</p>
+        </div>
+        <div className="flex items-center justify-between mt-2">
+          <span className="text-sm font-medium">${hotel.price}<span className="text-xs font-normal text-muted-foreground">/night</span></span>
+          <div className="flex gap-2">
+            <Button asChild size="sm">
+              <Link to={`/hotels/${hotel._id}`}>
+                <Eye className="h-3 w-3 mr-1" />
+                Details
+              </Link>
+            </Button>
+            <Button asChild size="sm" className="bg-green-600 hover:bg-green-700">
+              <Link to={`/hotels/${hotel._id}`}>Book Now</Link>
+            </Button>
+          </div>
+        </div>
       </div>
-    </Card>
+    </div>
   );
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-      <div className="container mx-auto px-4">
+      <div className="mx-2 sm:mx-4 px-3 sm:px-4">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8">
           {/* Title Section */}
@@ -328,7 +307,7 @@ const HotelsListingPage = () => {
           <>
             <div className={
               viewMode === "grid"
-                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children"
+                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 stagger-children"
                 : "space-y-4 stagger-children"
             }>
               {paginatedHotels?.map((hotel) =>
