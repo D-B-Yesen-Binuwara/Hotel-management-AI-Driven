@@ -15,7 +15,7 @@ function HotelCard(props) {
 
 
   return (
-    <div className="group relative">
+    <div className="group relative rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200 p-2">
       <Link to={`/hotels/${props.hotel._id}`} className="block">
         <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
           <LazyImage
@@ -26,7 +26,7 @@ function HotelCard(props) {
         </div>
       </Link>
       <div className="mt-3 space-y-2">
-        <h3 className="font-semibold text-lg">{props.hotel.name}</h3>
+        <h3 className="font-medium text-base">{props.hotel.name}</h3>
         <div className="flex items-center text-muted-foreground">
           <MapPin className="h-4 w-4 mr-1" />
           <span>{props.hotel.location}</span>
@@ -49,7 +49,7 @@ function HotelCard(props) {
           </Button>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-xl font-bold">${props.hotel.price}</span>
+          <span className="text-base font-medium">${props.hotel.price}<span className="text-xs font-normal text-muted-foreground">/night</span></span>
           <Button asChild size="sm" className="bg-green-600 hover:bg-green-700">
             <Link to={`/hotels/${props.hotel._id}`}>
               Book Now
